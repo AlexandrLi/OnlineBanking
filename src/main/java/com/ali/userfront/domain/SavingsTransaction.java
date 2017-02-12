@@ -1,9 +1,13 @@
 package com.ali.userfront.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Entity
 public class SavingsTransaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date date;
     private String description;
@@ -11,19 +15,22 @@ public class SavingsTransaction {
     private String status;
     private double amount;
     private BigDecimal availableBalance;
-    private PrimaryAccount primaryAccount;
+
+    @ManyToOne
+    @JoinColumn(name = "primary_account_id")
+    private SavingsAccount savingsAccount;
 
     public SavingsTransaction() {
     }
 
-    public SavingsTransaction(Date date, String description, String type, String status, double amount, BigDecimal availableBalance, PrimaryAccount primaryAccount) {
+    public SavingsTransaction(Date date, String description, String type, String status, double amount, BigDecimal availableBalance, SavingsAccount savingsAccount) {
         this.date = date;
         this.description = description;
         this.type = type;
         this.status = status;
         this.amount = amount;
         this.availableBalance = availableBalance;
-        this.primaryAccount = primaryAccount;
+        this.savingsAccount = savingsAccount;
     }
 
     public Long getId() {
@@ -82,12 +89,12 @@ public class SavingsTransaction {
         this.availableBalance = availableBalance;
     }
 
-    public PrimaryAccount getPrimaryAccount() {
-        return primaryAccount;
+    public SavingsAccount getSavingsAccount() {
+        return savingsAccount;
     }
 
-    public void setPrimaryAccount(PrimaryAccount primaryAccount) {
-        this.primaryAccount = primaryAccount;
+    public void setSavingsAccount(SavingsAccount savingsAccount) {
+        this.savingsAccount = savingsAccount;
     }
 
     @Override
